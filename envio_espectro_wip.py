@@ -25,7 +25,7 @@ def send_to_webhook(url, data):
     return response.status_code, response.text
 
 
-webhook_url = 'http://127.0.0.1:8000/webhook/receive/spectrum/'
+webhook_url = 'http://127.0.0.1:8000/webhook/receive/'
 count = 0
 i = True
 
@@ -70,7 +70,6 @@ while i :
         
         try:
             cursor.execute(sql)
-            i = False
         except:
             print('Erro na inserção dos dados')
             break
