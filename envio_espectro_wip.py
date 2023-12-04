@@ -20,12 +20,8 @@ conexao = mysql.connector.connect(
 cursor = conexao.cursor()
 
 def send_to_webhook(url, data):
-    print("Aqui\n")
     headers = {'Content-Type': 'application/json'}
-    print("Não sei o errado do certo\n")
-    json_array = pd.Series(data).to_json(orient='values')
-    response = requests.post(url, headers=headers, data=json.dumps(json_array))
-    print("Passei\n")
+    response = requests.post(url, headers=headers, data=json.dumps(data))
     return response.status_code, response.text
 
 
@@ -63,26 +59,7 @@ while i :
             print("Erro botando os dados do spectro no banco de dados\n")
             break
         try:
-            wave_lengths = wavelengths[::50]
-            spectrum_ch1 = spectrum_ch1[::50]
-            spectrum_ch2 = spectrum_ch2[::50]
-            spectrum_ch3 = spectrum_ch3[::50]
-            spectrum_ch4 = spectrum_ch4[::50]
-            spectrum_data = {
-                'wave_lengths': wave_lengths,
-                'channel_1_values': spectrum_ch1,
-                'channel_2_values': spectrum_ch2,
-                'channel_3_values': spectrum_ch3,
-                'channel_4_values': spectrum_ch4,
-            }
-        except:
-            print("Erro pegando os dados do spectro para o webhook\n")
-            break
-        try:
-            #print(webhook_url)
-            #print(spectrum_data)
-            response = send_to_webhook(webhook_url, spectrum_data)
-            #print(response)
+            response = send_to_webhook(webhook_url, "Novo_Espectro")
         except Exception as e:
             print(e)
             print("\n")
@@ -93,6 +70,7 @@ while i :
         
         try:
             cursor.execute(sql)
+            i = False
         except:
             print('Erro na inserção dos dados')
             break

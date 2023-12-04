@@ -36,27 +36,14 @@ while i:
         sql = f'INSERT INTO app_sensor_petrobras_peaks (date_time, n_peaks_ch1, channel_1_x, channel_1_y, n_peaks_ch2, channel_2_x, channel_2_y, n_peaks_ch3, channel_3_x, channel_3_y, n_peaks_ch4, channel_4_x, channel_4_y) VALUES ("{date_time}", {peaks[0]}, {wavelengths[0][0]}, {levels[0][0]}, {peaks[1]}, {wavelengths[1][0]}, {levels[1][0]}, {peaks[2]}, {wavelengths[2][0]}, {levels[2][0]}, {peaks[3]}, {wavelengths[3][0]}, {levels[3][0]})'
         cursor.execute(sql)
         conexao.commit()
-        peaks_data = {
-            'date_time': date_time.isoformat(),
-            'n_peaks_ch1': peaks[0],
-            'channel_1_x': wavelengths[0][0],
-            'channel_1_y': levels[0][0],
-            'n_peaks_ch2': peaks[1],
-            'channel_2_x': wavelengths[1][0],
-            'channel_2_y': levels[1][0],
-            'n_peaks_ch3': peaks[2],
-            'channel_3_x': wavelengths[2][0],
-            'channel_3_y': levels[2][0],
-            'n_peaks_ch4': peaks[3],
-            'channel_4_x': wavelengths[3][0],
-            'channel_4_y': levels[3][0]
-        }
-        
-        response = send_to_webhook(webhook_url, peaks_data)
-        print(response)
+        response = send_to_webhook(webhook_url, "Novo_Pico")
+        #print(response)
         print('Picos inseridos')
-    except:
+        i = False
+    except Exception as e:
+        print(e)
         print('Erro na leitura/insercao dos picos')
+        break
         try:
             spectrum = interr.get_spectrum
             date_time = datetime.datetime.now()
